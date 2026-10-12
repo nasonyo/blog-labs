@@ -12,15 +12,10 @@ services:
     command:
       - --config.file=/etc/prometheus/prometheus.yml
       - --storage.tsdb.retention.time=7d   # 데이터 보관 기간
-    depends_on:
-      - node-exporter
-
-  node-exporter:
-    image: prom/node-exporter:v1.8.2
-    container_name: node-exporter
-    # 호스트에 포트를 열지 않는다. 같은 compose 네트워크에서 node-exporter:9100 으로 접근
-    expose:
-      - "9100"
+    extra_hosts:
+      # 컨테이너 안에서 호스트(내 로컬 머신)에 접근하기 위한 이름
+      # Docker Desktop 은 기본 제공, Linux 는 이 설정이 있어야 동작
+      - "host.docker.internal:host-gateway"
 
 volumes:
   prometheus-data:
