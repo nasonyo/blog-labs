@@ -1,0 +1,9 @@
+# 시크릿 / 로컬 환경
+.env
+*.pem
+*.key
+
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/
