@@ -1,0 +1,35 @@
+jenkins:
+  systemMessage: "08-jenkins 실습용 Jenkins (운영 환경에서 사용 금지)"
+  numExecutors: 2
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: admin
+          password: ${JENKINS_ADMIN_PASSWORD:-admin}   # 실습용 기본값
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+
+unclassified:
+  location:
+    url: http://localhost:8080/
+
+# Job DSL 로 파이프라인 잡을 코드로 정의한다
+jobs:
+  - script: >
+      pipelineJob('demo-app') {
+        description('Jenkinsfile 을 저장소에서 읽어 빌드 → 테스트 → 이미지 빌드 → 배포 → 스모크 테스트를 수행한다')
+        definition {
+          cpsScm {
+            scm {
+              git {
+                remote { url('${JOB_REPO_URL:-https://github.com/nasonyo/blog-labs.git}') }
+                branches('*/main')
+              }
+            }
+            scriptPath('08-jenkins/app/Jenkinsfile')
+            lightweight(true)
+          }
+        }
+      }

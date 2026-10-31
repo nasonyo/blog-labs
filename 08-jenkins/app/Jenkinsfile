@@ -1,0 +1,55 @@
+pipeline {
+    agent any
+
+    environment {
+        IMAGE = 'demo-app'
+        NETWORK = 'cicd-net'
+    }
+
+    stages {
+        stage('Test') {
+            steps {
+                // Dockerfile 의 test 스테이지에서 pytest 를 실행한다
+                dir('08-jenkins/app') {
+                    sh 'docker build --target test -t ${IMAGE}:test .'
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                dir('08-jenkins/app') {
+                    sh 'docker build --target runtime -t ${IMAGE}:${BUILD_NUMBER} -t ${IMAGE}:latest .'
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                // 같은 이름의 기존 컨테이너를 교체한다
+                sh '''
+                    docker rm -f ${IMAGE} 2>/dev/null || true
+                    docker run -d --name ${IMAGE} --network ${NETWORK} -p 8000:8000 ${IMAGE}:${BUILD_NUMBER}
+                '''
+            }
+        }
+
+        stage('Smoke Test') {
+            steps {
+                // Jenkins 컨테이너에서 같은 네트워크의 앱 컨테이너를 이름으로 호출한다
+                sh '''
+                    for i in 1 2 3 4 5 6 7 8 9 10; do
+                        curl -sf http://${IMAGE}:8000/health && exit 0
+                        sleep 1
+                    done
+                    echo "health check failed"; exit 1
+                '''
+            }
+        }
+    }
+
+    post {
+        success { echo "Deployed ${env.IMAGE}:${env.BUILD_NUMBER}" }
+        failure { echo 'Pipeline failed' }
+    }
+}
