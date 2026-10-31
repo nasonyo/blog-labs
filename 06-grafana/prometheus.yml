@@ -1,0 +1,14 @@
+global:
+  scrape_interval: 15s       # 15초마다 메트릭 수집
+
+scrape_configs:
+  # 1) Prometheus 자기 자신
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  # 2) 로컬 머신에서 직접 실행 중인 node_exporter
+  #    컨테이너 안의 localhost 는 컨테이너 자신이므로 host.docker.internal 로 호스트에 접근한다
+  - job_name: node
+    static_configs:
+      - targets: ["host.docker.internal:9100"]
