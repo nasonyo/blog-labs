@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memo-app
+  namespace: memo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: memo-app
+  template:
+    metadata:
+      labels:
+        app: memo-app
+    spec:
+      initContainers:                            # DB 가 준비될 때까지 앱 컨테이너 시작을 미룬다
+        - name: wait-for-db
+          image: postgres:16.4
+          command: ["sh", "-c", "until pg_isready -h postgres -p 5432; do echo waiting for db; sleep 2; done"]
+      containers:
+        - name: memo-app
+          image: memo-app:v1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                configMapKeyRef: { name: memo-config, key: POSTGRES_USER }
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef: { name: memo-secret, key: POSTGRES_PASSWORD }
+          envFrom:
+            - configMapRef:
+                name: memo-config                # SPRING_DATASOURCE_URL 등을 한 번에 주입
+          readinessProbe:
+            httpGet: { path: /actuator/health/readiness, port: 8080 }
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            httpGet: { path: /actuator/health/liveness, port: 8080 }
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          lifecycle:
+            preStop:
+              exec:
+                command: ["sleep", "5"]          # 롤링 업데이트 중 요청 실패를 줄인다 (이전 글 참고)
+          resources:
+            requests: { cpu: 100m, memory: 256Mi }
+            limits: { memory: 512Mi }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: memo-app
+  namespace: memo
+spec:
+  type: NodePort
+  selector:
+    app: memo-app
+  ports:
+    - port: 80
+      targetPort: 8080
+      nodePort: 30080          # 09-kubernetes/kind-config.yaml 의 포트 매핑 (localhost:8080)

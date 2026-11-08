@@ -11,6 +11,7 @@
 | [09-kubernetes](./09-kubernetes) | kind 로컬 클러스터에서 Deployment·Service 배포 (자가 복구, 롤링 업데이트) | [글 보기](https://journal52709.tistory.com/5) |
 | [10-spring-postgres](./10-spring-postgres) | Spring Boot + PostgreSQL 을 Docker Compose 로 연동 (JPA, 멀티 스테이지 빌드) | [글 보기](https://journal52709.tistory.com/6) |
 | [11-spring-monitoring](./11-spring-monitoring) | Spring Boot 메트릭을 Prometheus 로 수집하고 Grafana 로 보기 (Micrometer) | [글 보기](https://journal52709.tistory.com/7) |
+| [12-k8s-spring-postgres](./12-k8s-spring-postgres) | Spring Boot + PostgreSQL 을 쿠버네티스에 배포 (ConfigMap, Secret, StatefulSet, PVC) | TODO: Tistory URL |
 
 ## 규칙
 - 시크릿은 커밋하지 않는다. 필요한 값은 `.env.example` 로 제공한다.

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: memo-config
+  namespace: memo
+data:
+  # 민감하지 않은 설정만 ConfigMap 에 둔다 (비밀번호는 Secret)
+  POSTGRES_DB: memo
+  POSTGRES_USER: memo
+  SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/memo   # Service 이름(postgres)으로 접근
+  MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: health,info
