@@ -12,6 +12,7 @@
 | [10-spring-postgres](./10-spring-postgres) | Spring Boot + PostgreSQL 을 Docker Compose 로 연동 (JPA, 멀티 스테이지 빌드) | [글 보기](https://journal52709.tistory.com/6) |
 | [11-spring-monitoring](./11-spring-monitoring) | Spring Boot 메트릭을 Prometheus 로 수집하고 Grafana 로 보기 (Micrometer) | [글 보기](https://journal52709.tistory.com/7) |
 | [12-k8s-spring-postgres](./12-k8s-spring-postgres) | Spring Boot + PostgreSQL 을 쿠버네티스에 배포 (ConfigMap, Secret, StatefulSet, PVC) | [글 보기](https://journal52709.tistory.com/8) |
+| [13-jenkins-k8s](./13-jenkins-k8s) | Jenkins 로 쿠버네티스에 자동 배포 (롤링 업데이트, 실패 시 롤백) | TODO: Tistory URL |
 
 ## 규칙
 - 시크릿은 커밋하지 않는다. 필요한 값은 `.env.example` 로 제공한다.
