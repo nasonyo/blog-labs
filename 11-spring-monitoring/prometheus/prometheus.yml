@@ -1,0 +1,8 @@
+global:
+  scrape_interval: 5s          # 실습용으로 짧게 (기본 1m)
+
+scrape_configs:
+  - job_name: memo-app
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets: ["app:8080"]  # compose 서비스 이름으로 접근한다
