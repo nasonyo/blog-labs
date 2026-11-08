@@ -1,0 +1,75 @@
+pipeline {
+    agent any
+
+    parameters {
+        booleanParam(name: 'BREAK_DEPLOY', defaultValue: false,
+                     description: '존재하지 않는 이미지 태그로 배포해서 실패와 롤백을 확인한다')
+    }
+
+    environment {
+        IMAGE      = 'memo-app'
+        NAMESPACE  = 'memo'
+        KIND_NAME  = 'blog'
+        APP_DIR    = '11-spring-monitoring/app'
+        MANIFEST   = '12-k8s-spring-postgres/k8s/30-app.yaml'
+        SMOKE_URL  = 'http://blog-worker:30080/actuator/health'   // kind 노드의 NodePort
+    }
+
+    stages {
+        stage('Validate') {
+            steps {
+                // 매니페스트가 API 서버 기준으로 유효한지 서버 측에서 검사한다 (실제로 적용하지는 않는다)
+                sh 'kubectl apply --dry-run=server -f ${MANIFEST}'
+            }
+        }
+
+        stage('Build Image') {
+            steps {
+                sh 'docker build -t ${IMAGE}:${BUILD_NUMBER} ${APP_DIR}'
+            }
+        }
+
+        stage('Load to Cluster') {
+            steps {
+                // 레지스트리 없이 kind 노드에 이미지를 직접 적재한다 (실습용)
+                sh 'kind load docker-image ${IMAGE}:${BUILD_NUMBER} --name ${KIND_NAME}'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    env.DEPLOY_TAG = params.BREAK_DEPLOY ? 'does-not-exist' : env.BUILD_NUMBER
+                }
+                // 매니페스트의 이미지 태그만 이번 빌드 값으로 바꿔서 적용한다
+                sh '''
+                    sed "s#image: ${IMAGE}:v1#image: ${IMAGE}:${DEPLOY_TAG}#" ${MANIFEST} | kubectl apply -f -
+                    kubectl -n ${NAMESPACE} rollout status deployment/memo-app --timeout=90s
+                '''
+            }
+        }
+
+        stage('Smoke Test') {
+            steps {
+                sh '''
+                    for i in 1 2 3 4 5 6 7 8 9 10; do
+                        curl -sf ${SMOKE_URL} && echo && exit 0
+                        sleep 2
+                    done
+                    echo "health check failed"; exit 1
+                '''
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Deployed ${env.IMAGE}:${env.DEPLOY_TAG}"
+        }
+        failure {
+            // 롤아웃이 실패하면 직전 리비전으로 되돌린다
+            sh 'kubectl -n ${NAMESPACE} rollout undo deployment/memo-app || true'
+            echo 'Deploy failed: rolled back to the previous revision'
+        }
+    }
+}

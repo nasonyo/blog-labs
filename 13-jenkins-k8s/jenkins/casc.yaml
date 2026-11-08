@@ -1,0 +1,34 @@
+jenkins:
+  systemMessage: "13-jenkins-k8s 실습용 Jenkins (운영 환경에서 사용 금지)"
+  numExecutors: 2
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: admin
+          password: ${JENKINS_ADMIN_PASSWORD:-admin}   # 실습용 기본값
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+
+unclassified:
+  location:
+    url: http://localhost:9080/
+
+jobs:
+  - script: >
+      pipelineJob('memo-deploy') {
+        description('이미지를 빌드해서 kind 클러스터의 memo-app 에 롤링 배포한다')
+        definition {
+          cpsScm {
+            scm {
+              git {
+                remote { url('${JOB_REPO_URL:-https://github.com/nasonyo/blog-labs.git}') }
+                branches('*/main')
+              }
+            }
+            scriptPath('13-jenkins-k8s/Jenkinsfile')
+            lightweight(true)
+          }
+        }
+      }
