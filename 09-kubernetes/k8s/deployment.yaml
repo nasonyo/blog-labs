@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: demo-app
+  template:
+    metadata:
+      labels:
+        app: demo-app
+    spec:
+      containers:
+        - name: demo-app
+          image: demo-app:v1
+          imagePullPolicy: IfNotPresent   # kind 에 load 한 로컬 이미지를 쓰기 위함
+          ports:
+            - containerPort: 8000
+          readinessProbe:                 # 통과해야 Service 가 트래픽을 보낸다
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 2
+            periodSeconds: 3
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              memory: 128Mi
