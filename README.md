@@ -13,7 +13,7 @@
 | [11-spring-monitoring](./11-spring-monitoring) | Spring Boot 메트릭을 Prometheus 로 수집하고 Grafana 로 보기 (Micrometer) | [글 보기](https://journal52709.tistory.com/7) |
 | [12-k8s-spring-postgres](./12-k8s-spring-postgres) | Spring Boot + PostgreSQL 을 쿠버네티스에 배포 (ConfigMap, Secret, StatefulSet, PVC) | [글 보기](https://journal52709.tistory.com/8) |
 | [13-jenkins-k8s](./13-jenkins-k8s) | Jenkins 로 쿠버네티스에 자동 배포 (롤링 업데이트, 실패 시 롤백) | [글 보기](https://journal52709.tistory.com/9) |
-| [14-react-nginx](./14-react-nginx) | React(Vite) 프런트엔드를 Nginx 로 서빙하고 API 프록시하기 | TODO: Tistory URL |
+| [14-react-nginx](./14-react-nginx) | React(Vite) 프런트엔드를 Nginx 로 서빙하고 API 프록시하기 | [글 보기](https://journal52709.tistory.com/10) |
 
 ## 규칙
 - 시크릿은 커밋하지 않는다. 필요한 값은 `.env.example` 로 제공한다.
