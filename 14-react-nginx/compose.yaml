@@ -1,0 +1,39 @@
+services:
+  db:
+    image: postgres:16.4
+    environment:
+      POSTGRES_DB: memo
+      POSTGRES_USER: memo
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-memo}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U memo -d memo"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  app:
+    build: ../10-spring-postgres/app          # 앞선 글의 백엔드를 그대로 쓴다
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/memo
+      SPRING_DATASOURCE_USERNAME: memo
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-memo}
+    ports:
+      - "8090:8080"        # 개발/디버깅용 직접 접근. 운영에서는 공개하지 않고 web 의 프록시로만 접근한다
+
+  web:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE: ${VITE_API_BASE:-}      # 비워 두면 같은 주소의 /api (Nginx 프록시)
+    depends_on:
+      - app
+    ports:
+      - "8085:80"
+
+volumes:
+  pgdata:
