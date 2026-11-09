@@ -1,0 +1,5 @@
+2026-11-08T17:20:03Z INFO  nginx  GET /api/memos 200 18ms
+2026-11-08T17:25:11Z WARN  nginx  upstream response is buffered to a temporary file
+2026-11-08T17:27:40Z INFO  nginx  GET / 200 2ms
+2026-11-08T17:30:02Z WARN  nginx  slow request: GET /api/memos took 1.3s
+2026-11-08T17:31:55Z INFO  nginx  GET /assets/index-6xtuYa1i.js 304 1ms

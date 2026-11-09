@@ -1,0 +1,10 @@
+2026-11-08T17:20:03Z INFO  MemoApplication  Started MemoApplication in 4.2 seconds
+2026-11-08T17:20:41Z INFO  MemoController   GET /api/memos 200 12ms
+2026-11-08T17:31:10Z INFO  Deploy           rollout started: memo-app image memo-app:6
+2026-11-08T17:31:22Z ERROR SqlExceptionHelper FATAL: password authentication failed for user "memo"
+2026-11-08T17:31:22Z ERROR HikariPool       HikariPool-1 - Exception during pool initialization
+2026-11-08T17:31:23Z ERROR MemoApplication  Application run failed
+2026-11-08T17:31:40Z WARN  KubeProbe        Readiness probe failed: HTTP probe failed with statuscode: 503
+2026-11-08T17:31:52Z ERROR SqlExceptionHelper FATAL: password authentication failed for user "memo"
+2026-11-08T17:32:15Z ERROR SqlExceptionHelper FATAL: password authentication failed for user "memo"
+2026-11-08T17:32:15Z WARN  KubeProbe        Back-off restarting failed container memo-app (CrashLoopBackOff)

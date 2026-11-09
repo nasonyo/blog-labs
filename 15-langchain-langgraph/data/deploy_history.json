@@ -1,0 +1,5 @@
+[
+  {"service": "memo-app", "image": "memo-app:5", "deployed_at": "2026-11-08T17:05:00Z", "status": "succeeded", "note": "정상 배포"},
+  {"service": "memo-app", "image": "memo-app:6", "deployed_at": "2026-11-08T17:31:10Z", "status": "in_progress", "note": "Secret 의 DB 비밀번호 변경 후 롤아웃"},
+  {"service": "web", "image": "web:3", "deployed_at": "2026-11-08T16:50:00Z", "status": "succeeded", "note": "정상 배포"}
+]

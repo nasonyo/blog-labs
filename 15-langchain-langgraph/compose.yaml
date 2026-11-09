@@ -1,0 +1,22 @@
+# 에이전트 스크립트를 컨테이너에서 실행한다. LLM 은 Gemini API 를 사용한다.
+# API 키는 .env 파일(GOOGLE_API_KEY=...)에 둔다. .env 는 .gitignore 로 제외되어 커밋되지 않는다.
+x-agent: &agent
+  build: .
+  image: langchain-langgraph-lab:local     # 두 서비스가 같은 이미지를 쓴다 (한 번만 빌드)
+  env_file:
+    - path: .env
+      required: true
+  environment:
+    MODEL: ${MODEL:-gemini-3.5-flash}
+    PYTHONUNBUFFERED: "1"
+
+services:
+  langchain-agent:
+    <<: *agent
+    command: ["python", "-m", "agents.langchain_agent"]
+    profiles: ["run"]
+
+  langgraph-workflow:
+    <<: *agent
+    command: ["python", "-m", "agents.langgraph_workflow"]
+    profiles: ["run"]
