@@ -1,0 +1,19 @@
+d86421b baseline: memo app + spec kit scaffold
+a179136 docs: constitution v1.0.0 and spec for 001-memo-tags (3 open questions)
+4352cda docs: clarify 001-memo-tags (4 questions answered)
+1201662 docs: plan, research, data-model, contracts, quickstart for 001-memo-tags
+48597a5 docs: tasks for 001-memo-tags (33 tasks, test-first)
+684def4 docs: analyze report and resolve findings A1-A3 (sorted tags, traceability)
+d2ee01f T001-T003: test dependencies, H2 config, baseline tests (green)
+78c55d8 T004,T006: TagNormalizer and error-body tests (red: classes missing)
+b8cba18 T005,T007: TagNormalizer and ApiExceptionHandler (green, 12 tests)
+9fd0081 T008-T011,T010a: US1 tests (red: 7 failures as expected)
+9e269d1 T013-T015: tags on Memo (EAGER, SortNatural); plan docs corrected after tests caught lazy loading and ordering (19 tests green)
+a0540af T016-T020: US2 filter tests (red: 4 failures); strengthen T019 which passed by accident
+ef5301c T021-T024: tag filter on GET /api/memos (24 tests green)
+476df6e T025-T027: US3 tag list tests (red: 3 failures)
+4efe8bd T028-T030: GET /api/tags (27 tests green)
+ce94b38 T031: verified on PostgreSQL; quickstart corrected for non-ASCII query values
+e7c531a converge: report, Phase 7 tasks T034-T037, tests for G1/G2 (red expected)
+5aacf6c T036-T037: handle unreadable bodies with field errors (29 tests green)
+859cf64 T033: README; mark tasks complete

@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:16.4
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-memo}
+      POSTGRES_USER: ${POSTGRES_USER:-memo}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-memo}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  app:
+    build: ./app
+    depends_on:
+      db:
+        condition: service_healthy     # DB 가 준비된 뒤에 앱을 시작한다
+    environment:
+      # localhost 가 아니라 서비스 이름(db)으로 접근한다
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-memo}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-memo}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-memo}
+    ports:
+      - "8090:8080"
+
+volumes:
+  pgdata:

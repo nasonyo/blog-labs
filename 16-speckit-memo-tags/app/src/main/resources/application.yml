@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    # 기본값은 로컬 개발용. 컨테이너에서는 환경변수(SPRING_DATASOURCE_*)로 덮어쓴다
+    url: jdbc:postgresql://localhost:5432/memo
+    username: memo
+    password: memo
+  jpa:
+    hibernate:
+      ddl-auto: update        # 학습용: 엔티티에 맞춰 테이블을 자동 생성/수정한다
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+server:
+  shutdown: graceful
