@@ -1,0 +1,46 @@
+# 메모 API(앞선 글의 앱) + DB + MCP 서버 점검용 컨테이너
+services:
+  db:
+    image: postgres:16.4
+    environment:
+      POSTGRES_DB: memo
+      POSTGRES_USER: memo
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-memo}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U memo -d memo"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  app:
+    build: ../16-speckit-memo-tags/app        # 태그 기능이 있는 메모 API
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/memo
+      SPRING_DATASOURCE_USERNAME: memo
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-memo}
+    ports:
+      - "8090:8080"
+
+  # Claude Code 가 실행할 MCP 서버 이미지 (up 으로는 실행되지 않고 build 용)
+  mcp-memo:
+    build: ./server
+    image: mcp-memo:local
+    profiles: ["build"]
+
+  # 클라이언트 코드로 서버를 점검한다: docker compose --profile run run --rm mcp-check
+  mcp-check:
+    image: mcp-memo:local
+    entrypoint: ["python", "check.py"]
+    environment:
+      MEMO_API_URL: http://app:8080
+    depends_on:
+      - app
+    profiles: ["run"]
+
+volumes:
+  pgdata:
