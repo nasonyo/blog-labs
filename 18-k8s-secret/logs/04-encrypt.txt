@@ -1,0 +1,20 @@
+$ ./enable-encryption.sh
+apiserver 재시작 대기...
+완료
+
+$ ./etcd-get.sh db-pass   (암호화 켠 직후, 기존 secret 은 그대로)
+/registry/secrets/secret-lab/db-pass
+/{"f:data":{".":{},"f:password":{}},"f:type":{}}B
+password
+demo-Passw0rd!
+
+$ kubectl get secrets -A -o json | kubectl replace -f -   (모든 secret 을 다시 써서 암호화)
+secret/bootstrap-token-abcdef replaced
+secret/db-pass replaced
+
+$ ./etcd-get.sh db-pass   (다시 쓴 뒤)
+/registry/secrets/secret-lab/db-pass
+k8s:enc:aescbc:v1:key1:·b
+
+$ kubectl -n secret-lab get secret db-pass -o jsonpath='{.data.password}' | base64 -d   (API 로는 여전히 읽힘)
+demo-Passw0rd!

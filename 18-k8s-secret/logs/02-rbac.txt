@@ -1,0 +1,18 @@
+$ kubectl apply -f rbac.yaml
+serviceaccount/reader created
+serviceaccount/nobody created
+role.rbac.authorization.k8s.io/secret-reader created
+rolebinding.rbac.authorization.k8s.io/reader-binding created
+
+$ kubectl auth can-i get secrets -n secret-lab --as=system:serviceaccount:secret-lab:reader
+yes
+
+$ kubectl auth can-i get secrets -n secret-lab --as=system:serviceaccount:secret-lab:nobody
+no
+
+$ kubectl -n secret-lab get secret db-pass --as=system:serviceaccount:secret-lab:nobody
+Error from server (Forbidden): secrets "db-pass" is forbidden: User "system:serviceaccount:secret-lab:nobody" cannot get resource "secrets" in API group "" in the namespace "secret-lab"
+
+$ kubectl -n secret-lab get secret db-pass --as=system:serviceaccount:secret-lab:reader
+NAME      TYPE     DATA   AGE
+db-pass   Opaque   1      5s

@@ -1,0 +1,21 @@
+$ kubectl create namespace secret-lab
+namespace/secret-lab created
+
+$ kubectl -n secret-lab create secret generic db-pass --from-literal=password='demo-Passw0rd!'
+secret/db-pass created
+
+$ kubectl -n secret-lab get secret db-pass -o yaml
+apiVersion: v1
+data:
+  password: ZGVtby1QYXNzdzByZCE=
+kind: Secret
+metadata:
+  name: db-pass
+  namespace: secret-lab
+type: Opaque
+
+$ kubectl -n secret-lab get secret db-pass -o jsonpath='{.data.password}'
+ZGVtby1QYXNzdzByZCE=
+
+$ kubectl -n secret-lab get secret db-pass -o jsonpath='{.data.password}' | base64 -d
+demo-Passw0rd!

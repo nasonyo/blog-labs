@@ -1,0 +1,5 @@
+$ ./etcd-get.sh db-pass   (암호화 켜기 전)
+/registry/secrets/secret-lab/db-pass
+/{"f:data":{".":{},"f:password":{}},"f:type":{}}B
+password
+demo-Passw0rd!
