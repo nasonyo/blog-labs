@@ -19,7 +19,7 @@
 | [17-mcp-memo-server](./17-mcp-memo-server) | 메모 서비스를 AI 가 쓸 수 있게 하는 MCP 서버 (mcp 2.3.0, Claude Code 연결) | [글 보기](https://journal52709.tistory.com/13) |
 | [18-k8s-secret](./18-k8s-secret) | Secret 은 base64 일 뿐: 디코딩, RBAC, etcd 저장 암호화 확인 (kind v0.33.0, k8s v1.37.0) | [글 보기](https://journal52709.tistory.com/15) |
 | [19-helm-chart](./19-helm-chart) | Helm 차트로 환경별 배포, 업그레이드 실패 시 롤백 (Helm v4.3.2, kind) | [글 보기](https://journal52709.tistory.com/16) |
-| [20-nginx-lb](./20-nginx-lb) | Nginx 로드밸런싱: 라운드 로빈, weight, zone, 서버 장애 (nginx 1.27, Docker Compose) | 준비 중 |
+| [20-nginx-lb](./20-nginx-lb) | Nginx 로드밸런싱: 라운드 로빈, weight, zone, 서버 장애 (nginx 1.27, Docker Compose) | [글 보기](https://journal52709.tistory.com/17) |
 
 ## 규칙
 - 시크릿은 커밋하지 않는다. 필요한 값은 `.env.example` 로 제공한다.
