@@ -1,0 +1,26 @@
+
+$ kubectl -n helm-lab get pods
+NAME                   READY   STATUS    RESTARTS   AGE
+web-69787579c8-k7p8l   1/1     Running   0          11s
+
+$ helm upgrade web ./memo-web -n helm-lab --set message='값만 바꿨습니다' --wait --timeout 60s | head -3
+Release "web" has been upgraded. Happy Helming!
+NAME: web
+LAST DEPLOYED: Sun Nov 15 15:59:11 2026
+
+$ kubectl -n helm-lab get pods
+NAME                   READY   STATUS      RESTARTS   AGE
+web-69787579c8-k7p8l   0/1     Completed   0          11s
+web-6b7fddbf44-44f8v   1/1     Running     0          0s
+
+$ curl -s localhost:8088
+<h1>값만 바꿨습니다</h1>
+
+$ helm uninstall web -n helm-lab
+release "web" uninstalled
+
+$ kubectl delete namespace helm-lab
+namespace "helm-lab" deleted
+
+$ helm list -A
+NAME	NAMESPACE	REVISION	UPDATED	STATUS	CHART	APP VERSION

@@ -18,6 +18,7 @@
 | [16-speckit-memo-tags](./16-speckit-memo-tags) | GitHub Spec Kit 으로 기존 서비스에 기능 추가하기 (스펙 주도 개발, 전 단계 산출물) | [글 보기](https://journal52709.tistory.com/12) |
 | [17-mcp-memo-server](./17-mcp-memo-server) | 메모 서비스를 AI 가 쓸 수 있게 하는 MCP 서버 (mcp 2.3.0, Claude Code 연결) | [글 보기](https://journal52709.tistory.com/13) |
 | [18-k8s-secret](./18-k8s-secret) | Secret 은 base64 일 뿐: 디코딩, RBAC, etcd 저장 암호화 확인 (kind v0.33.0, k8s v1.37.0) | [글 보기](https://journal52709.tistory.com/15) |
+| [19-helm-chart](./19-helm-chart) | Helm 차트로 환경별 배포, 업그레이드 실패 시 롤백 (Helm v4.3.2, kind) | (발행 후 추가) |
 
 ## 규칙
 - 시크릿은 커밋하지 않는다. 필요한 값은 `.env.example` 로 제공한다.

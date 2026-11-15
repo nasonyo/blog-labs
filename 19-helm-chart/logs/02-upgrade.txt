@@ -1,0 +1,38 @@
+# 1) dev 값으로 확인
+
+$ curl -s localhost:8088
+<h1>dev 환경입니다</h1>
+
+$ helm upgrade web ./memo-web -n helm-lab -f values-prod.yaml --wait --timeout 90s
+Release "web" has been upgraded. Happy Helming!
+NAME: web
+LAST DEPLOYED: Sun Nov 15 15:57:22 2026
+NAMESPACE: helm-lab
+STATUS: deployed
+REVISION: 2
+DESCRIPTION: Upgrade complete
+TEST SUITE: None
+
+$ kubectl -n helm-lab get deploy,pods
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/web   3/3     3            3           20s
+
+NAME                       READY   STATUS        RESTARTS   AGE
+pod/web-69787579c8-8hhld   0/1     Completed     0          20s
+pod/web-69787579c8-nxc8x   1/1     Terminating   0          7s
+pod/web-847cfbb965-9g77v   1/1     Running       0          7s
+pod/web-847cfbb965-l9w5j   1/1     Running       0          0s
+pod/web-847cfbb965-mvdnb   1/1     Running       0          6s
+
+$ curl -s localhost:8088
+<h1>prod 환경입니다</h1>
+
+$ helm history web -n helm-lab
+REVISION	UPDATED                 	STATUS    	CHART         	APP VERSION	DESCRIPTION     
+1       	Sun Nov 15 15:57:09 2026	superseded	memo-web-0.1.0	1.27       	Install complete
+2       	Sun Nov 15 15:57:22 2026	deployed  	memo-web-0.1.0	1.27       	Upgrade complete
+
+$ helm get values web -n helm-lab
+USER-SUPPLIED VALUES:
+message: prod 환경입니다
+replicaCount: 3

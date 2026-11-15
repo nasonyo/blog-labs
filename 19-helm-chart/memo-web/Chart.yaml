@@ -1,0 +1,6 @@
+apiVersion: v2
+name: memo-web
+description: 값(values)만 바꿔 환경별로 배포하는 실습용 차트
+type: application
+version: 0.1.0        # 차트 자체의 버전
+appVersion: "1.27"    # 배포하는 앱(nginx)의 버전 표기

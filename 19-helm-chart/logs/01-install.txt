@@ -1,0 +1,66 @@
+# helm v4.3.2+g8346aaa, kubectl context: kind-blog
+
+$ helm template web ./memo-web | head -40
+---
+# Source: memo-web/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: web-page
+data:
+  index.html: |
+    <h1>dev 환경입니다</h1>
+
+---
+# Source: memo-web/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+spec:
+  selector:
+    app: web
+  ports:
+    - port: 80
+      targetPort: 80
+
+---
+# Source: memo-web/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+      annotations:
+        # ConfigMap 내용이 바뀌면 이 값도 바뀌어서 파드가 다시 뜬다
+
+$ helm install web ./memo-web -n helm-lab --create-namespace --wait --timeout 90s
+NAME: web
+LAST DEPLOYED: Sun Nov 15 15:57:09 2026
+NAMESPACE: helm-lab
+STATUS: deployed
+REVISION: 1
+DESCRIPTION: Install complete
+TEST SUITE: None
+
+$ kubectl -n helm-lab get deploy,pods,svc
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/web   1/1     1            1           6s
+
+NAME                       READY   STATUS    RESTARTS   AGE
+pod/web-69787579c8-8hhld   1/1     Running   0          6s
+
+NAME          TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE
+service/web   ClusterIP   10.96.184.23   <none>        80/TCP    6s
+
+$ helm list -n helm-lab
+NAME	NAMESPACE	REVISION	UPDATED                             	STATUS  	CHART         	APP VERSION
+web 	helm-lab 	1       	2026-11-15 15:57:09.551813 +0900 KST	deployed	memo-web-0.1.0	1.27       

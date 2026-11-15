@@ -1,0 +1,12 @@
+# 기본값(개발 환경). 환경별로 바꿀 값만 -f 로 덮어쓴다.
+replicaCount: 1
+
+image:
+  repository: nginx
+  tag: "1.27-alpine"
+  pullPolicy: IfNotPresent
+
+message: "dev 환경입니다"
+
+service:
+  port: 80
