@@ -1,0 +1,12 @@
+## D-3. 느렸던 요청의 Nginx 로그 (upstream 에 주소가 두 개 = 한 곳에서 실패하고 다음 서버로 재시도)
+HTTP/1.1 status=200 upstream=172.23.0.4:80, 172.23.0.2:80
+2026/11/15 07:30:12 [error] 23#23: *3 connect() failed (113: Host is unreachable) while connecting to upstream, client: 192.168.65.1, server: , request: "GET / HTTP/1.1", upstream: "http://172.23.0.4:80/", host: "localho
+2026/11/15 07:30:12 [warn] 23#23: *3 upstream server temporarily disabled while connecting to upstream, client: 192.168.65.1, server: , request: "GET / HTTP/1.1", upstream: "http://172.23.0.4:80/", host: "localhost:8090"
+
+## D-4. 11초 기다린 뒤 다시 6번 요청
+200 0.008269s Hostname: app1 
+200 0.005871s Hostname: app3 
+200 0.005575s Hostname: app1 
+200 3.095457s Hostname: app3 
+200 0.005667s Hostname: app1 
+200 0.003247s Hostname: app3 

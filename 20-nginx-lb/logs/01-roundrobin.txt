@@ -1,0 +1,15 @@
+# CPU 수와 Nginx 워커 수
+nproc=10  workers=10
+
+## A. zone 없음: 갓 시작한 직후 9번 요청
+   9 Hostname: app1
+
+## B. zone 있음: 갓 시작한 직후 9번 요청
+   3 Hostname: app1
+   3 Hostname: app2
+   3 Hostname: app3
+
+## C. weight=3: 15번 요청
+   9 Hostname: app1
+   3 Hostname: app2
+   3 Hostname: app3

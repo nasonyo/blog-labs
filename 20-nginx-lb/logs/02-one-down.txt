@@ -1,0 +1,19 @@
+$ docker compose stop app2
+ Container 20-nginx-lb-app2-1 Stopped 
+
+## D. app2 정지 후 9번 요청 (상태코드, 소요시간, 응답 서버)
+200 0.002280s Hostname: app1 
+200 3.062455s Hostname: app3 
+200 0.003183s Hostname: app3 
+200 0.004305s Hostname: app1 
+200 0.003688s Hostname: app3 
+200 0.007066s Hostname: app1 
+200 0.002475s Hostname: app3 
+200 0.003975s Hostname: app1 
+200 0.008363s Hostname: app3 
+
+## D-2. Nginx 로그 일부(upstream 에 시도한 주소)
+HTTP/1.1 status=200 upstream=172.23.0.3:80
+HTTP/1.1 status=200 upstream=172.23.0.2:80
+HTTP/1.1 status=200 upstream=172.23.0.3:80
+HTTP/1.1 status=200 upstream=172.23.0.2:80

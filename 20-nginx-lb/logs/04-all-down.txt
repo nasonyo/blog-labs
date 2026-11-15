@@ -1,0 +1,17 @@
+## E-1. 백엔드 3대 모두 중지 후 3번 요청
+000 30.008779s (curl 30초 제한에 걸려 응답 없음; 뒤의 Hostname 은 이전 요청의 남은 값이라 무시)
+502 4.650618s 
+502 0.003878s 
+
+## E-2. 에러 로그
+GET / HTTP/1.1 status=502 upstream=172.23.0.4:80, 172.23.0.3:80, backend
+2026/11/15 08:00:42 [error] 21#21: *40 no live upstreams while connecting to upstream, client: 192.168.65.1, server: , request: "GET / HTTP/1.1", upstream: "http://backend/", host: "localhost:8090"
+GET / HTTP/1.1 status=502 upstream=backend
+
+## E-3. 전부 다시 시작 후 12초 대기, 6번 요청
+200 0.004948s Hostname: app2 
+200 0.003595s Hostname: app2 
+200 0.002983s Hostname: app1 
+200 0.002123s Hostname: app3 
+200 0.002131s Hostname: app2 
+200 0.003868s Hostname: app1 
