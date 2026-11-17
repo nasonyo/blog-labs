@@ -1,0 +1,10 @@
+## C. apk upgrade 를 추가한 이미지 (nginx-patched:1)
+CRITICAL 0 HIGH 0  OS: 3.21.3
+
+## D. nginx:stable-alpine 를 새로 받은 이미지
+created: 2026-11-05T20:12:01.433571624Z
+CRITICAL 0 HIGH 3  OS: 3.24.4
+
+## E. CI 게이트: CRITICAL 이 있으면 종료 코드 1
+nginx:1.27-alpine exit=1
+nginx-patched:1 exit=0

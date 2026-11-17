@@ -1,0 +1,5 @@
+A nginx:1.18 total 189 with fix available 156 top pkgs [('libexpat1', 17), ('libwebp6', 13), ('libc-bin', 11), ('libc6', 11)]
+B nginx:1.27-alpine total 70 with fix available 70 top pkgs [('libexpat', 13), ('libcrypto3', 9), ('libssl3', 9), ('libpng', 6)]
+  CRIT CVE-2026-111497 brotli-libs 1.1.0-r2 fixed: 1.1.1-r0
+  CRIT CVE-2026-31789 libcrypto3 3.3.3-r0 fixed: 3.3.7-r0
+  CRIT CVE-2026-31789 libssl3 3.3.3-r0 fixed: 3.3.7-r0
